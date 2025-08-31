@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BullZilla LAB Coin Presale</title>
+<title>LAB Coin Presale</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
@@ -49,7 +49,6 @@
 <header class="bg-gray-900 text-white shadow-md fixed w-full z-50">
   <div class="container mx-auto flex justify-between items-center px-4 py-4">
     <div class="flex items-center space-x-3">
-      <!-- Neon Logo -->
       <img src="https://images.lifestyleasia.com/wp-content/uploads/sites/3/2024/09/12171526/20240822_100945_011032____3_____1200x1200-806x806.jpg" 
            alt="LAB Coin Logo" class="w-12 h-12 neon-logo shadow-lg">
       <span class="text-2xl font-bold orbitron">LAB Coin</span>
@@ -78,138 +77,64 @@
   </div>
 </header>
 
-<!-- Buy Now Section -->
-<section id="buy" class="container mx-auto px-4 py-32 text-center">
-  <h1 class="text-5xl font-bold orbitron mb-6">LAB Coin Presale</h1>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-    <div>
-      <label class="block mb-2">Select Crypto</label>
-      <select id="cryptoSelect" class="w-full bg-gray-800 border border-gray-600 rounded-xl px-4 py-3">
-        <option value="ETH">ETH (ERC-20)</option>
-        <option value="USDT">USDT (ERC-20)</option>
-        <option value="SHIB">SHIB (ERC-20)</option>
-        <option value="PEPE">PEPE (ERC-20)</option>
-        <option value="FLOKI">FLOKI (ERC-20)</option>
-        <option value="USDC">USDC (ERC-20)</option>
-        <option value="BNB">BNB (BEP-20)</option>
-        <option value="BUSD">BUSD (BEP-20)</option>
-        <option value="USDCB">USDC (Base)</option>
-        <option value="MATIC">MATIC (Polygon)</option>
-        <option value="BTC">BTC (Bitcoin)</option>
-        <option value="SOL">SOL (Solana)</option>
-        <option value="DOGE">DOGE (Dogecoin)</option>
-        <option value="TON">TON (TON Chain)</option>
-        <option value="AVAX">AVAX (Avalanche)</option>
-        <option value="BCH">BCH</option>
-        <option value="TRX">TRX (TRC-20)</option>
-        <option value="LTC">LTC</option>
-        <option value="ETC">ETC</option>
-        <option value="ADA">ADA</option>
-      </select>
+<!-- Presale Stats + Countdown + Progress -->
+<section id="presaleStats" class="container mx-auto px-4 py-32 text-center">
+  <div class="max-w-3xl mx-auto bg-gray-800 rounded-2xl p-6 shadow-lg">
+    <h2 class="text-3xl font-bold orbitron mb-4">Stage 1: The Project Trinity Boom Phase 2</h2>
+    <p class="text-orange-400 font-bold mb-6">Next Price Increase In <span class="text-white">$98,028</span></p>
+
+    <!-- Countdown -->
+    <div class="grid grid-cols-4 gap-4 mb-6 text-white">
+      <div>
+        <span id="days" class="block text-4xl font-bold orbitron">00</span>
+        <span class="block text-sm text-gray-400">Days</span>
+      </div>
+      <div>
+        <span id="hours" class="block text-4xl font-bold orbitron">00</span>
+        <span class="block text-sm text-gray-400">Hours</span>
+      </div>
+      <div>
+        <span id="minutes" class="block text-4xl font-bold orbitron">00</span>
+        <span class="block text-sm text-gray-400">Minutes</span>
+      </div>
+      <div>
+        <span id="seconds" class="block text-4xl font-bold orbitron">00</span>
+        <span class="block text-sm text-gray-400">Seconds</span>
+      </div>
     </div>
-    <div>
-      <label class="block mb-2">Enter Amount</label>
-      <input type="number" id="cryptoAmount" placeholder="0.1" class="w-full bg-gray-800 border border-gray-600 rounded-xl px-4 py-3">
+
+    <!-- Token Stats + Logo -->
+    <div class="flex justify-between items-center text-white mb-6">
+      <div class="text-left">
+        <p class="font-bold text-xl orbitron">020.85B</p>
+        <p class="text-gray-400 text-sm">Shibe Tokens</p>
+      </div>
+      <div class="text-center">
+        <img src="https://images.lifestyleasia.com/wp-content/uploads/sites/3/2024/09/12171526/20240822_100945_011032____3_____1200x1200-806x806.jpg" 
+             alt="LAB Coin Logo" class="w-12 h-12 mx-auto rounded-full shadow-lg neon-logo">
+        <p class="text-gray-400 text-sm">LAB Coin</p>
+      </div>
+      <div class="text-right">
+        <p class="font-bold text-xl orbitron">12.96B</p>
+        <p class="text-gray-400 text-sm">Total Raised</p>
+        <p class="font-bold text-lg">$75,602</p>
+      </div>
+    </div>
+
+    <p class="text-orange-400 font-bold text-lg">Current Price: <span class="text-white">$0.00001242</span></p>
+
+    <!-- Progress Bar -->
+    <div class="mt-6">
+      <p class="text-white mb-2 font-semibold">Stage 1 Progress</p>
+      <div class="w-full bg-gray-700 rounded-xl h-6 overflow-hidden">
+        <div id="progressBar" class="h-6 bg-gradient-to-r from-orange-500 to-yellow-400 text-center text-white font-bold" style="width:0%">0%</div>
+      </div>
     </div>
   </div>
-  <div class="mt-4">
-    <label class="block mb-2">Total tokens received</label>
-    <input type="text" id="labAmount" readonly class="w-full max-w-xs mx-auto bg-gray-900 border border-gray-600 rounded-xl px-4 py-3 neon-glow" placeholder="0 LAB">
-  </div>
-  <div class="mt-4">
-    <label class="block mb-2">Referral Code (Optional)</label>
-    <input type="text" id="referralCode" class="w-full max-w-xs mx-auto bg-gray-800 border border-gray-600 rounded-xl px-4 py-3">
-  </div>
-  <button id="buyNowBtn" class="mt-4 w-full max-w-xs bull-gradient text-white font-bold py-3 rounded-xl pulse-glow">Buy Now</button>
-  <p class="mt-2 text-gray-400 text-sm">By purchasing you agree to our Terms of Use & Disclaimer</p>
 </section>
 
-<!-- Buy Now Popup -->
-<div id="buyPopup" class="fixed inset-0 bg-black/70 flex items-center justify-center hidden z-50">
-  <div class="bg-gradient-to-br from-orange-500 to-yellow-400 rounded-2xl p-8 w-96 max-w-full relative animate-pulse">
-    <button id="closePopup" class="absolute top-3 right-3 text-white text-xl font-bold hover:text-gray-100">&times;</button>
-    <h2 class="text-2xl font-bold orbitron mb-4 text-white">Confirm Purchase</h2>
-    <p class="text-white mb-4" id="popupMessage"></p>
-    <button id="confirmBuy" class="w-full bg-white text-orange-600 font-bold py-2 rounded-xl hover:bg-gray-100 transition-all">Simulate Purchase</button>
-  </div>
-</div>
+<!-- Buy Now Section -->
+<section id="buy" class="container mx-auto px-4 py-12 text-center">
+  <h1 class="text-5xl font-bold orbitron mb-6">Buy LAB Coin</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2
 
-<!-- Footer -->
-<footer class="container mx-auto px-4 py-12 text-center border-t border-gray-800">
-  <p class="text-gray-400">© 2025 LAB Coin. All Rights Reserved.</p>
-</footer>
-
-<script>
-// Mobile menu toggle
-const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-const mobileMenu = document.getElementById('mobileMenu');
-mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-
-// Simulate Connect Wallet
-document.getElementById('connectWalletBtn').addEventListener('click', () => alert('Wallet connected! (simulation)'));
-document.getElementById('mobileConnectBtn').addEventListener('click', () => alert('Wallet connected! (simulation)'));
-
-// Neon count-up animation
-function animateTokens(finalValue) {
-    const display = document.getElementById('labAmount');
-    let start = 0;
-    const duration = 1000;
-    const stepTime = 16;
-    const increment = finalValue / (duration / stepTime);
-
-    display.value = '0';
-    display.classList.add('neon-glow');
-
-    const counter = setInterval(() => {
-        start += increment;
-        if (start >= finalValue) {
-            start = finalValue;
-            clearInterval(counter);
-        }
-        display.value = start.toLocaleString(undefined, { maximumFractionDigits: 4 }) + ' LAB';
-    }, stepTime);
-}
-
-// LAB Coin Calculator
-function calculateTokens() {
-    const amount = Math.max(0, parseFloat(document.getElementById('cryptoAmount').value) || 0);
-    const currency = document.getElementById('cryptoSelect').value;
-    const prices = {
-        ETH: 3200, USDT: 1, SHIB: 0.00001, PEPE:0.000002, FLOKI:0.000003, USDC:1, BNB:400, BUSD:1, USDCB:1, MATIC:1.2,
-        BTC:50000, SOL:35, DOGE:0.07, TON:2, AVAX:20, BCH:130, TRX:0.07, LTC:60, ETC:20, ADA:0.25
-    };
-    const tokenPrice = 0.00001242;
-    const usdValue = amount * (prices[currency] || 0);
-    const labTokens = usdValue / tokenPrice;
-    animateTokens(labTokens);
-}
-
-document.getElementById('cryptoAmount').addEventListener('input', calculateTokens);
-document.getElementById('cryptoSelect').addEventListener('change', calculateTokens);
-
-// Buy Now Popup
-const buyBtn = document.getElementById('buyNowBtn');
-const popup = document.getElementById('buyPopup');
-const popupMessage = document.getElementById('popupMessage');
-const closePopup = document.getElementById('closePopup');
-const confirmBuy = document.getElementById('confirmBuy');
-
-buyBtn.addEventListener('click', () => {
-    const crypto = document.getElementById('cryptoSelect').value;
-    const amount = parseFloat(document.getElementById('cryptoAmount').value);
-    const labTokens = document.getElementById('labAmount').value;
-    const referral = document.getElementById('referralCode').value;
-    if (!amount || amount <= 0) { alert("Enter a valid amount!"); return; }
-    popupMessage.innerText = `You're about to spend ${amount} ${crypto} to receive ${labTokens}. ${referral ? 'Referral: ' + referral : ''}`;
-    popup.classList.remove('hidden');
-});
-
-closePopup.addEventListener('click', () => popup.classList.add('hidden'));
-confirmBuy.addEventListener('click', () => {
-    alert('Purchase simulated successfully!');
-    popup.classList.add('hidden');
-});
-</script>
-
-</body>
-</html>
