@@ -1,183 +1,172 @@
-import React, { useState } from "react";
-import { ethers } from "ethers";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAB Coin ($LAB) - Official Presale Portal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+.orbitron { font-family: 'Orbitron', monospace; }
+.inter { font-family: 'Inter', sans-serif; }
+.bull-gradient { background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffcd3c 100%); }
+.dark-gradient { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+.glow { box-shadow: 0 0 30px rgba(255, 107, 53, 0.3); }
+.pulse-glow { animation: pulseGlow 2s infinite; }
+@keyframes pulseGlow { 0%,100% { box-shadow: 0 0 20px rgba(255,107,53,0.4);} 50% { box-shadow: 0 0 40px rgba(255,107,53,0.8);} }
+.countdown-box { background: linear-gradient(145deg, #2d2d44, #1a1a2e); border: 2px solid #ff6b35; }
+</style>
+</head>
+<body class="dark-gradient min-h-screen text-white inter">
 
-// 👉 Քո Smart Contract Address
-const CONTRACT_ADDRESS = "0xYourContractAddressHere";
+<!-- Navbar -->
+<header class="bg-gray-900 text-white shadow-md">
+  <div class="container mx-auto flex justify-between items-center px-4 py-4">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-yellow-400 rounded-full flex items-center justify-center text-2xl font-bold">🐂</div>
+      <span class="text-2xl font-bold orbitron">LAB Coin</span>
+    </div>
+    <nav class="hidden md:flex space-x-6 items-center">
+      <a href="#buy" class="hover:text-orange-400 transition-colors">Buy Now</a>
+      <a href="#how-to-buy" class="hover:text-orange-400 transition-colors">How to Buy</a>
+      <a href="#whitepaper" class="hover:text-orange-400 transition-colors">Whitepaper</a>
+      <a href="#staking" class="hover:text-orange-400 transition-colors">Staking</a>
+      <a href="#referral" class="hover:text-orange-400 transition-colors">Referral</a>
+      <a href="#blog" class="hover:text-orange-400 transition-colors">Blog</a>
+    </nav>
+    <button id="connectWalletBtn" class="ml-4 bg-gradient-to-r from-green-500 to-green-400 hover:from-green-600 hover:to-green-500 transition-colors text-white font-bold px-4 py-2 rounded-xl orbitron">Connect Wallet</button>
+    <div class="md:hidden">
+      <button id="mobileMenuBtn" class="text-white text-2xl">☰</button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="hidden bg-gray-800 text-white px-4 py-4 space-y-2">
+    <a href="#buy" class="block hover:text-orange-400 transition-colors">Buy Now</a>
+    <a href="#how-to-buy" class="block hover:text-orange-400 transition-colors">How to Buy</a>
+    <a href="#whitepaper" class="block hover:text-orange-400 transition-colors">Whitepaper</a>
+    <a href="#staking" class="block hover:text-orange-400 transition-colors">Staking</a>
+    <a href="#referral" class="block hover:text-orange-400 transition-colors">Referral</a>
+    <a href="#blog" class="block hover:text-orange-400 transition-colors">Blog</a>
+    <button id="mobileConnectBtn" class="w-full bg-gradient-to-r from-green-500 to-green-400 hover:from-green-600 hover:to-green-500 transition-colors text-white font-bold px-4 py-2 rounded-xl orbitron">Connect Wallet</button>
+  </div>
+</header>
 
-// 👉 Քո Token Presale Contract ABI
-const CONTRACT_ABI = [
-  "function buyTokens(address referral) public payable",
-  "function buyWithUSDT(uint256 amount, address referral) public",
-];
-
-// 👉 USDT Token Contract (ERC-20) — Ethereum mainnet example
-const USDT_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
-
-// 👉 ERC20 Minimal ABI
-const ERC20_ABI = [
-  "function approve(address spender, uint256 amount) public returns (bool)",
-  "function allowance(address owner, address spender) public view returns (uint256)",
-  "function balanceOf(address account) external view returns (uint256)",
-  "function decimals() external view returns (uint8)",
-];
-
-export default function BullZillaDapp() {
-  const [account, setAccount] = useState(null);
-  const [amountEth, setAmountEth] = useState("0.01");
-  const [amountUSDT, setAmountUSDT] = useState("10");
-  const [referral, setReferral] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  // --- connect wallet ---
-  async function connectWallet() {
-    if (!window.ethereum) return alert("Please install MetaMask!");
-    try {
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      setAccount(accounts[0]);
-    } catch (err) {
-      console.error(err);
-      alert("Wallet connection failed!");
-    }
-  }
-
-  // --- buy with ETH ---
-  async function buyWithEth() {
-    if (!window.ethereum) return alert("Please install MetaMask!");
-    setLoading(true);
-
-    try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-
-      const value = ethers.parseEther(amountEth);
-
-      const tx = await contract.buyTokens(referral || ethers.ZeroAddress, {
-        value,
-      });
-
-      console.log("ETH Tx sent:", tx.hash);
-      alert(`Transaction sent: ${tx.hash}`);
-
-      await tx.wait();
-      alert("✅ ETH Purchase confirmed!");
-    } catch (err) {
-      console.error(err);
-      alert("❌ ETH Purchase failed!");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  // --- buy with USDT ---
-  async function buyWithUsdt() {
-    if (!window.ethereum) return alert("Please install MetaMask!");
-    setLoading(true);
-
-    try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const user = await signer.getAddress();
-
-      // USDT Contract
-      const usdt = new ethers.Contract(USDT_ADDRESS, ERC20_ABI, signer);
-      const decimals = await usdt.decimals();
-      const amount = ethers.parseUnits(amountUSDT, decimals);
-
-      // Approve if needed
-      const allowance = await usdt.allowance(user, CONTRACT_ADDRESS);
-      if (allowance < amount) {
-        const approveTx = await usdt.approve(CONTRACT_ADDRESS, amount);
-        console.log("Approval Tx:", approveTx.hash);
-        await approveTx.wait();
-        alert("✅ Approved USDT spending");
-      }
-
-      // Call contract
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-      const tx = await contract.buyWithUSDT(amount, referral || ethers.ZeroAddress);
-
-      console.log("USDT Tx sent:", tx.hash);
-      alert(`Transaction sent: ${tx.hash}`);
-
-      await tx.wait();
-      alert("✅ USDT Purchase confirmed!");
-    } catch (err) {
-      console.error(err);
-      alert("❌ USDT Purchase failed!");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  return (
-    <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-6">
-      <div className="max-w-lg w-full bg-slate-800 rounded-xl p-6 space-y-6">
-        <h1 className="text-2xl font-bold">🚀 Buy BullZilla ($BZIL)</h1>
-
-        {!account ? (
-          <button
-            onClick={connectWallet}
-            className="w-full px-4 py-2 bg-amber-500 text-black rounded-lg"
-          >
-            Connect Wallet
-          </button>
-        ) : (
-          <div className="space-y-4">
-            <p className="text-sm">Connected: {account}</p>
-
-            {/* ETH BUY */}
-            <div className="p-4 bg-slate-700 rounded-lg">
-              <h2 className="font-semibold mb-2">Buy with ETH</h2>
-              <input
-                type="number"
-                value={amountEth}
-                onChange={(e) => setAmountEth(e.target.value)}
-                className="w-full p-2 rounded text-black"
-              />
-              <button
-                onClick={buyWithEth}
-                disabled={loading}
-                className="mt-3 w-full px-4 py-2 bg-emerald-500 text-black rounded-lg"
-              >
-                {loading ? "Processing..." : "Buy with ETH"}
-              </button>
-            </div>
-
-            {/* USDT BUY */}
-            <div className="p-4 bg-slate-700 rounded-lg">
-              <h2 className="font-semibold mb-2">Buy with USDT (ERC-20)</h2>
-              <input
-                type="number"
-                value={amountUSDT}
-                onChange={(e) => setAmountUSDT(e.target.value)}
-                className="w-full p-2 rounded text-black"
-              />
-              <button
-                onClick={buyWithUsdt}
-                disabled={loading}
-                className="mt-3 w-full px-4 py-2 bg-blue-400 text-black rounded-lg"
-              >
-                {loading ? "Processing..." : "Buy with USDT"}
-              </button>
-            </div>
-
-            {/* REFERRAL */}
-            <div>
-              <label className="block mb-2">Referral (optional)</label>
-              <input
-                type="text"
-                value={referral}
-                onChange={(e) => setReferral(e.target.value)}
-                className="w-full p-2 rounded text-black"
-                placeholder="0x000... (optional)"
-              />
-            </div>
-          </div>
-        )}
+<!-- Hero Section -->
+<section class="container mx-auto px-4 py-12 text-center">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-5xl md:text-7xl font-black orbitron mb-6 bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">LAB COIN PRESALE</h1>
+    <p class="text-xl md:text-2xl mb-8 text-gray-300">The Meme Coin with Dynamic Pricing & Roar Burn Mechanism</p>
+    <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8 mb-8">
+      <div class="text-center">
+        <div class="text-3xl font-bold text-orange-400" id="currentPrice">$0.00000575</div>
+        <div class="text-sm text-gray-400">Current Price</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-green-400" id="totalRaised">$0</div>
+        <div class="text-sm text-gray-400">Total Raised</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-yellow-400" id="targetPrice">$0.52</div>
+        <div class="text-sm text-gray-400">Target Price</div>
       </div>
     </div>
-  );
+  </div>
+</section>
+
+<!-- Presale Section -->
+<section id="buy" class="container mx-auto px-4 py-12">
+  <div class="max-w-2xl mx-auto">
+    <div class="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-8 glow border border-orange-500/30">
+      <h2 class="text-3xl font-bold text-center mb-8 orbitron">🔥 PRESALE LIVE NOW 🔥</h2>
+      <div class="mb-8">
+        <label class="block text-sm font-medium mb-2">Amount (ETH / USDT / BTC / DASH / TON / SHIB)</label>
+        <input type="number" id="cryptoAmount" placeholder="0.1" class="w-full bg-gray-800 border border-gray-600 rounded-xl px-4 py-3 focus:border-orange-500 focus:outline-none" oninput="calculateTokens()">
+      </div>
+      <div class="mb-8">
+        <label class="block text-sm font-medium mb-2">You'll Receive (LAB Coin)</label>
+        <input type="text" id="labAmount" readonly class="w-full bg-gray-700 border border-gray-600 rounded-xl px-4 py-3 text-gray-300" placeholder="0">
+      </div>
+      <button onclick="connectWallet()" id="buyButton" class="w-full bull-gradient text-white font-bold py-4 px-8 rounded-xl hover:opacity-90 transition-all duration-300 pulse-glow orbitron">🚀 CONNECT WALLET & BUY NOW</button>
+      <div class="text-center text-sm text-gray-400 mt-4">Minimum purchase: 0.01 • Maximum: 10</div>
+    </div>
+  </div>
+</section>
+
+<!-- Countdown Timer + JS -->
+<section class="container mx-auto px-4 py-12 text-center">
+  <div class="grid grid-cols-4 gap-4 max-w-md mx-auto">
+    <div class="countdown-box rounded-xl p-4 text-center">
+      <div class="text-2xl font-bold orbitron" id="hours">48</div>
+      <div class="text-xs text-gray-400">HOURS</div>
+    </div>
+    <div class="countdown-box rounded-xl p-4 text-center">
+      <div class="text-2xl font-bold orbitron" id="minutes">00</div>
+      <div class="text-xs text-gray-400">MINUTES</div>
+    </div>
+    <div class="countdown-box rounded-xl p-4 text-center">
+      <div class="text-2xl font-bold orbitron" id="seconds">00</div>
+      <div class="text-xs text-gray-400">SECONDS</div>
+    </div>
+    <div class="countdown-box rounded-xl p-4 text-center">
+      <div class="text-xl font-bold text-orange-400">⚡</div>
+      <div class="text-xs text-gray-400">NEXT PRICE</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="container mx-auto px-4 py-12 text-center border-t border-gray-800">
+  <div class="flex items-center justify-center space-x-3 mb-6">
+    <div class="w-8 h-8 bull-gradient rounded-full flex items-center justify-center text-lg font-bold">🐂</div>
+    <span class="text-xl font-bold orbitron">LAB Coin</span>
+  </div>
+  <div class="flex justify-center space-x-4 mb-4">
+    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Home</a>
+    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">FAQ</a>
+    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Terms & Conditions</a>
+    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Disclaimer</a>
+    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Privacy Policy</a>
+    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Cookies</a>
+    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Contact</a>
+    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Dashboard</a>
+  </div>
+  <p class="text-gray-400">© 2025 LAB Coin. All Rights Reserved.</p>
+</footer>
+
+<script>
+// Mobile menu toggle
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+mobileMenuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+
+// Countdown Timer 48h logic
+let countdown = 48*3600; // 48 hours in seconds
+function updateCountdown() {
+  let h = Math.floor(countdown / 3600);
+  let m = Math.floor((countdown % 3600) / 60);
+  let s = countdown % 60;
+  document.getElementById('hours').textContent = h.toString().padStart(2,'0');
+  document.getElementById('minutes').textContent = m.toString().padStart(2,'0');
+  document.getElementById('seconds').textContent = s.toString().padStart(2,'0');
+  if(countdown > 0) countdown--;
 }
+setInterval(updateCountdown, 1000);
+
+// Token price and calculation
+let labPrice = 0.00000575;
+function calculateTokens() {
+  const amt = parseFloat(document.getElementById('cryptoAmount').value)||0;
+  document.getElementById('labAmount').value = (amt / labPrice).toLocaleString(undefined, {maximumFractionDigits:0});
+}
+
+// Simulated wallet connect
+function connectWallet() {
+  alert('🚀 Wallet connection logic goes here (MetaMask, TronLink, TON, etc.)');
+}
+const connectWalletBtn = document.getElementById('connectWalletBtn');
+const mobileConnectBtn = document.getElementById('mobileConnectBtn');
+connectWalletBtn.addEventListener('click', connectWallet);
+mobileConnectBtn.addEventListener('click', connectWallet);
+</script>
+
+</body>
+</html>
