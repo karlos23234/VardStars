@@ -3,61 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LAB Coin Presale</title>
+<title>BullZilla Presale</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
 
-body {
-  font-family: 'Inter', sans-serif;
-  margin:0;
-  padding:0;
-  overflow-x:hidden;
-  background-image: url('https://ir.ozone.ru/s3/multimedia-1-c/w1200/7544150328.jpg');
-  background-size: cover;
-  background-position: center;
-  position: relative;
-}
-
-/* Neon logo */
+body { font-family: 'Inter', sans-serif; margin:0; padding:0; background:#111; overflow-x:hidden; }
 .orbitron { font-family: 'Orbitron', monospace; }
-.neon-logo { border-radius:50%; box-shadow: 0 0 20px #ff1a1a, 0 0 40px #ff4d4d, 0 0 60px #ff9999; animation: neonPulse 1.5s infinite; }
-@keyframes neonPulse { 0%,100% { box-shadow: 0 0 20px #ff1a1a,0 0 40px #ff4d4d,0 0 60px #ff9999;} 50% {box-shadow:0 0 40px #ff1a1a,0 0 60px #ff4d4d,0 0 80px #ff9999;} }
-
-/* Moving coins */
-.coin {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  animation: float linear infinite;
-}
-@keyframes float {
-  0% { transform: translateY(100vh) translateX(0) rotate(0deg);}
-  100% { transform: translateY(-100px) translateX(200px) rotate(360deg);}
-}
+.neon-logo { border-radius:50%; box-shadow:0 0 20px #ff1a1a,0 0 40px #ff4d4d,0 0 60px #ff9999; animation: neonPulse 1.5s infinite; }
+@keyframes neonPulse { 0%,100% { box-shadow:0 0 20px #ff1a1a,0 0 40px #ff4d4d,0 0 60px #ff9999;} 50% {box-shadow:0 0 40px #ff1a1a,0 0 60px #ff4d4d,0 0 80px #ff9999;} }
+.coin { position:absolute; width:60px; height:60px; animation: float linear infinite; }
+@keyframes float { 0% {transform:translateY(100vh) translateX(0) rotate(0deg);} 100% {transform:translateY(-100px) translateX(200px) rotate(360deg);} }
 </style>
 </head>
-<body class="relative">
+<body>
 
-<!-- Coins animation -->
+<!-- Header -->
+<header class="fixed w-full flex justify-between items-center px-6 py-4 bg-gray-900/80 z-50">
+  <div class="flex items-center space-x-3">
+    <img src="https://images.lifestyleasia.com/wp-content/uploads/sites/3/2024/09/12171526/2a0000019769527623745698a7b5cbbc7e44/orig" class="w-14 h-14 neon-logo">
+    <span class="text-2xl font-bold orbitron text-white">BullZilla</span>
+  </div>
+  <nav class="hidden md:flex space-x-6 text-white font-semibold">
+    <a href="#buy" class="hover:text-red-500">Buy Now</a>
+    <a href="#howto" class="hover:text-red-500">How to Buy</a>
+    <a href="#whitepaper" class="hover:text-red-500">Whitepaper</a>
+    <a href="#staking" class="hover:text-red-500">Staking</a>
+    <a href="#referral" class="hover:text-red-500">Referral</a>
+    <a href="#blog" class="hover:text-red-500">Blog</a>
+  </nav>
+  <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl text-white font-bold orbitron">Connect Wallet</button>
+</header>
+
+<!-- Coins Animation -->
 <img src="https://cryptologos.cc/logos/shiba-inu-shib-logo.png" class="coin" style="top:90%; left:10%; animation-duration:15s;">
 <img src="https://cryptologos.cc/logos/pepe-coin-pepe-logo.png" class="coin" style="top:80%; left:50%; animation-duration:20s;">
 <img src="https://cryptologos.cc/logos/dogecoin-doge-logo.png" class="coin" style="top:85%; left:30%; animation-duration:18s;">
 <img src="https://cryptologos.cc/logos/floki-inu-floki-logo.png" class="coin" style="top:95%; left:70%; animation-duration:22s;">
 <img src="https://cryptologos.cc/logos/vinu-vinu-logo.png" class="coin" style="top:90%; left:90%; animation-duration:25s;">
 
-<!-- Header -->
-<header class="fixed w-full flex justify-between items-center px-6 py-4 bg-gray-900/80 z-50">
-  <div class="flex items-center space-x-3">
-    <img src="https://images.lifestyleasia.com/wp-content/uploads/sites/3/2024/09/12171526/2a0000019769527623745698a7b5cbbc7e44/orig" class="w-14 h-14 neon-logo">
-    <span class="text-2xl font-bold orbitron text-white">LAB Coin</span>
-  </div>
-  <button id="connectWalletBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl text-white font-bold orbitron">Connect Wallet</button>
-</header>
-
-<!-- Main Presale Section -->
+<!-- Main Section -->
 <section class="flex flex-col items-center justify-center text-center min-h-screen pt-32 text-white">
-  <h1 class="text-5xl font-bold orbitron mb-6 neon-logo">LAB Coin Presale</h1>
+  <h1 class="text-5xl font-bold orbitron mb-6 neon-logo">BullZilla Presale</h1>
   <div class="bg-gray-800/80 rounded-2xl p-6 max-w-3xl w-full shadow-lg">
     <p class="text-red-400 font-bold mb-4">Stage 1: The Project Trinity Boom Phase 2</p>
     <p class="mb-6">Next Price Increase In <span class="text-white font-bold">$98,028</span></p>
@@ -77,44 +64,41 @@ body {
       </select>
       <input type="number" id="cryptoAmount" placeholder="0.1" class="bg-gray-700 rounded-xl px-4 py-3">
     </div>
-    <input type="text" id="labAmount" readonly placeholder="0 LAB" class="bg-gray-700 rounded-xl px-4 py-3 w-full mb-4 text-gray-200">
+    <input type="text" id="labAmount" readonly placeholder="0 BZIL" class="bg-gray-700 rounded-xl px-4 py-3 w-full mb-4 text-gray-200">
     <input type="text" id="referralCode" placeholder="Referral Code" class="bg-gray-700 rounded-xl px-4 py-3 w-full mb-4">
     <button id="buyNowBtn" class="bg-red-600 hover:bg-red-700 w-full py-3 rounded-xl font-bold">Buy Now</button>
   </div>
 </section>
 
 <script>
-// Wallet connect
-document.getElementById('connectWalletBtn').onclick = ()=>alert('Wallet connected!');
-
 // Countdown
 const targetDate = new Date();
-targetDate.setHours(targetDate.getHours() + 20);
+targetDate.setHours(targetDate.getHours()+20);
 function updateCountdown(){
   const now = new Date();
-  const diff = targetDate - now;
+  const diff = targetDate-now;
   if(diff<=0) return;
   const days = Math.floor(diff/(1000*60*60*24));
   const hours = Math.floor((diff/(1000*60*60))%24);
   const minutes = Math.floor((diff/(1000*60))%60);
   const seconds = Math.floor((diff/1000)%60);
-  document.getElementById('days').textContent = String(days).padStart(2,'0');
-  document.getElementById('hours').textContent = String(hours).padStart(2,'0');
-  document.getElementById('minutes').textContent = String(minutes).padStart(2,'0');
-  document.getElementById('seconds').textContent = String(seconds).padStart(2,'0');
+  document.getElementById('days').textContent=String(days).padStart(2,'0');
+  document.getElementById('hours').textContent=String(hours).padStart(2,'0');
+  document.getElementById('minutes').textContent=String(minutes).padStart(2,'0');
+  document.getElementById('seconds').textContent=String(seconds).padStart(2,'0');
 }
 setInterval(updateCountdown,1000);
 
 // LAB token calc
-function calcTokens(){
-  const amount = parseFloat(document.getElementById('cryptoAmount').value)||0;
-  const labTokens = amount*100000000; // simplified
-  document.getElementById('labAmount').value = labTokens.toLocaleString();
-}
-document.getElementById('cryptoAmount').addEventListener('input',calcTokens);
+document.getElementById('cryptoAmount').addEventListener('input',()=>{
+  const amount=parseFloat(document.getElementById('cryptoAmount').value)||0;
+  const lab=amount*100000000;
+  document.getElementById('labAmount').value=lab.toLocaleString();
+});
 </script>
 </body>
 </html>
+
 
 
 
