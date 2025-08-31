@@ -3,18 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LAB Coin Presale</title>
+<title>BullZilla LAB Coin Presale</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
 .orbitron { font-family: 'Orbitron', monospace; }
 .inter { font-family: 'Inter', sans-serif; }
+
+/* Gradients & glow */
 .bull-gradient { background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffcd3c 100%); }
 .dark-gradient { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
 .glow { box-shadow: 0 0 30px rgba(255, 107, 53, 0.3); }
 .pulse-glow { animation: pulseGlow 2s infinite; }
 @keyframes pulseGlow { 0%,100% { box-shadow: 0 0 20px rgba(255,107,53,0.4);} 50% { box-shadow: 0 0 40px rgba(255,107,53,0.8);} }
-.countdown-box { background: linear-gradient(145deg, #2d2d44, #1a1a2e); border: 2px solid #ff6b35; }
+
+/* Neon Logo */
+@keyframes neonPulseLogo {
+  0%,100% { box-shadow: 0 0 10px #ff6b35, 0 0 20px #f7931e, 0 0 30px #ffcd3c; }
+  50% { box-shadow: 0 0 20px #ff6b35, 0 0 30px #f7931e, 0 0 50px #ffcd3c; }
+}
+@keyframes logoSpin {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(5deg); }
+  100% { transform: rotate(0deg); }
+}
+.neon-logo {
+  border-radius: 50%;
+  animation: neonPulseLogo 1.5s infinite, logoSpin 4s infinite ease-in-out;
+  transition: transform 0.3s;
+}
+.neon-logo:hover { transform: scale(1.15); }
+
+/* Neon Tokens Count */
+@keyframes neonPulseText {
+  0%,100% { text-shadow: 0 0 5px #ff6b35, 0 0 10px #ff6b35, 0 0 20px #f7931e, 0 0 40px #ffcd3c; }
+  50% { text-shadow: 0 0 10px #ff6b35, 0 0 20px #f7931e, 0 0 30px #ffcd3c, 0 0 50px #ffcd3c; }
+}
+.neon-glow { animation: neonPulseText 1s infinite; color: #ffcd3c; font-weight: bold; text-align:center; font-size:1.2rem; }
 </style>
 </head>
 <body class="dark-gradient min-h-screen text-white inter">
@@ -23,7 +49,9 @@
 <header class="bg-gray-900 text-white shadow-md fixed w-full z-50">
   <div class="container mx-auto flex justify-between items-center px-4 py-4">
     <div class="flex items-center space-x-3">
-      <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-yellow-400 rounded-full flex items-center justify-center text-2xl font-bold">🐂</div>
+      <!-- Neon Logo -->
+      <img src="https://images.lifestyleasia.com/wp-content/uploads/sites/3/2024/09/12171526/20240822_100945_011032____3_____1200x1200-806x806.jpg" 
+           alt="LAB Coin Logo" class="w-12 h-12 neon-logo shadow-lg">
       <span class="text-2xl font-bold orbitron">LAB Coin</span>
     </div>
     <nav class="hidden md:flex space-x-6 items-center">
@@ -51,7 +79,7 @@
 </header>
 
 <!-- Buy Now Section -->
-<section id="buy" class="container mx-auto px-4 py-24 text-center">
+<section id="buy" class="container mx-auto px-4 py-32 text-center">
   <h1 class="text-5xl font-bold orbitron mb-6">LAB Coin Presale</h1>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
     <div>
@@ -86,7 +114,7 @@
   </div>
   <div class="mt-4">
     <label class="block mb-2">Total tokens received</label>
-    <input type="text" id="labAmount" readonly class="w-full max-w-xs mx-auto bg-gray-700 border border-gray-600 rounded-xl px-4 py-3 text-gray-300" placeholder="0 LAB">
+    <input type="text" id="labAmount" readonly class="w-full max-w-xs mx-auto bg-gray-900 border border-gray-600 rounded-xl px-4 py-3 neon-glow" placeholder="0 LAB">
   </div>
   <div class="mt-4">
     <label class="block mb-2">Referral Code (Optional)</label>
@@ -95,6 +123,16 @@
   <button id="buyNowBtn" class="mt-4 w-full max-w-xs bull-gradient text-white font-bold py-3 rounded-xl pulse-glow">Buy Now</button>
   <p class="mt-2 text-gray-400 text-sm">By purchasing you agree to our Terms of Use & Disclaimer</p>
 </section>
+
+<!-- Buy Now Popup -->
+<div id="buyPopup" class="fixed inset-0 bg-black/70 flex items-center justify-center hidden z-50">
+  <div class="bg-gradient-to-br from-orange-500 to-yellow-400 rounded-2xl p-8 w-96 max-w-full relative animate-pulse">
+    <button id="closePopup" class="absolute top-3 right-3 text-white text-xl font-bold hover:text-gray-100">&times;</button>
+    <h2 class="text-2xl font-bold orbitron mb-4 text-white">Confirm Purchase</h2>
+    <p class="text-white mb-4" id="popupMessage"></p>
+    <button id="confirmBuy" class="w-full bg-white text-orange-600 font-bold py-2 rounded-xl hover:bg-gray-100 transition-all">Simulate Purchase</button>
+  </div>
+</div>
 
 <!-- Footer -->
 <footer class="container mx-auto px-4 py-12 text-center border-t border-gray-800">
@@ -105,28 +143,73 @@
 // Mobile menu toggle
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
-mobileMenuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
 // Simulate Connect Wallet
-document.getElementById('connectWalletBtn').addEventListener('click', () => { alert('Wallet connected! (simulation)'); });
-document.getElementById('mobileConnectBtn').addEventListener('click', () => { alert('Wallet connected! (simulation)'); });
+document.getElementById('connectWalletBtn').addEventListener('click', () => alert('Wallet connected! (simulation)'));
+document.getElementById('mobileConnectBtn').addEventListener('click', () => alert('Wallet connected! (simulation)'));
+
+// Neon count-up animation
+function animateTokens(finalValue) {
+    const display = document.getElementById('labAmount');
+    let start = 0;
+    const duration = 1000;
+    const stepTime = 16;
+    const increment = finalValue / (duration / stepTime);
+
+    display.value = '0';
+    display.classList.add('neon-glow');
+
+    const counter = setInterval(() => {
+        start += increment;
+        if (start >= finalValue) {
+            start = finalValue;
+            clearInterval(counter);
+        }
+        display.value = start.toLocaleString(undefined, { maximumFractionDigits: 4 }) + ' LAB';
+    }, stepTime);
+}
 
 // LAB Coin Calculator
 function calculateTokens() {
-    const amount = parseFloat(document.getElementById('cryptoAmount').value) || 0;
+    const amount = Math.max(0, parseFloat(document.getElementById('cryptoAmount').value) || 0);
     const currency = document.getElementById('cryptoSelect').value;
     const prices = {
-      ETH: 3200, USDT: 1, SHIB: 0.00001, PEPE:0.000002, FLOKI:0.000003, USDC:1, BNB:400, BUSD:1, USDCB:1, MATIC:1.2,
-      BTC:50000, SOL:35, DOGE:0.07, TON:2, AVAX:20, BCH:130, TRX:0.07, LTC:60, ETC:20, ADA:0.25
+        ETH: 3200, USDT: 1, SHIB: 0.00001, PEPE:0.000002, FLOKI:0.000003, USDC:1, BNB:400, BUSD:1, USDCB:1, MATIC:1.2,
+        BTC:50000, SOL:35, DOGE:0.07, TON:2, AVAX:20, BCH:130, TRX:0.07, LTC:60, ETC:20, ADA:0.25
     };
-    const tokenPrice = 0.00001242; // Example current price
+    const tokenPrice = 0.00001242;
     const usdValue = amount * (prices[currency] || 0);
     const labTokens = usdValue / tokenPrice;
-    document.getElementById('labAmount').value = labTokens.toLocaleString(undefined, {maximumFractionDigits:4});
+    animateTokens(labTokens);
 }
+
 document.getElementById('cryptoAmount').addEventListener('input', calculateTokens);
 document.getElementById('cryptoSelect').addEventListener('change', calculateTokens);
+
+// Buy Now Popup
+const buyBtn = document.getElementById('buyNowBtn');
+const popup = document.getElementById('buyPopup');
+const popupMessage = document.getElementById('popupMessage');
+const closePopup = document.getElementById('closePopup');
+const confirmBuy = document.getElementById('confirmBuy');
+
+buyBtn.addEventListener('click', () => {
+    const crypto = document.getElementById('cryptoSelect').value;
+    const amount = parseFloat(document.getElementById('cryptoAmount').value);
+    const labTokens = document.getElementById('labAmount').value;
+    const referral = document.getElementById('referralCode').value;
+    if (!amount || amount <= 0) { alert("Enter a valid amount!"); return; }
+    popupMessage.innerText = `You're about to spend ${amount} ${crypto} to receive ${labTokens}. ${referral ? 'Referral: ' + referral : ''}`;
+    popup.classList.remove('hidden');
+});
+
+closePopup.addEventListener('click', () => popup.classList.add('hidden'));
+confirmBuy.addEventListener('click', () => {
+    alert('Purchase simulated successfully!');
+    popup.classList.add('hidden');
+});
 </script>
+
 </body>
 </html>
-
